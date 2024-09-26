@@ -98,7 +98,7 @@ public class ProfileController {
     }
 
     @Operation(summary = "Get Company Profile By Id")
-    @GetMapping(value = "/company/id/{id}")
+    @GetMapping(value = "/company/profile/{id}")
     public ResponseEntity<CompanyProfileResource> getCompanyProfile(@PathVariable Long id){
         var query = new GetCompanyByIdQuery(id);
         var company = profileQueryService.handle(query);
