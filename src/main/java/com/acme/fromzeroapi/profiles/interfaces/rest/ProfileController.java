@@ -3,10 +3,7 @@ package com.acme.fromzeroapi.profiles.interfaces.rest;
 import com.acme.fromzeroapi.profiles.domain.model.queries.*;
 import com.acme.fromzeroapi.profiles.domain.services.ProfileCommandService;
 import com.acme.fromzeroapi.profiles.domain.services.ProfileQueryService;
-import com.acme.fromzeroapi.profiles.interfaces.rest.resources.CompanyProfileResource;
-import com.acme.fromzeroapi.profiles.interfaces.rest.resources.DeveloperProfileResource;
-import com.acme.fromzeroapi.profiles.interfaces.rest.resources.UpdateCompanyProfileResource;
-import com.acme.fromzeroapi.profiles.interfaces.rest.resources.UpdateDeveloperProfileResource;
+import com.acme.fromzeroapi.profiles.interfaces.rest.resources.*;
 import com.acme.fromzeroapi.profiles.interfaces.rest.transform.CompanyProfileResourceFromEntityAssembler;
 import com.acme.fromzeroapi.profiles.interfaces.rest.transform.DeveloperProfileResourceFromEntityAssembler;
 import com.acme.fromzeroapi.profiles.interfaces.rest.transform.UpdateCompanyProfileCommandFromResourceAssembler;
@@ -65,26 +62,22 @@ public class ProfileController {
 
     @Operation(summary = "Get Developer Profile Id by email")
     @GetMapping(value = "/developer/{email}")
-    public ResponseEntity<String> getDeveloperProfileIdByEmail(@PathVariable String email) {
+    public ResponseEntity<ProfileIdResource> getDeveloperProfileIdByEmail(@PathVariable String email) {
         var query = new GetDeveloperProfileIdByEmailQuery(email);
         var developer = profileQueryService.handle(query);
         if(developer.isEmpty())ResponseEntity.badRequest().build();
-        /*var profileId = developer.map(value -> ResponseEntity.ok(value.getProfileId().RecordId())).orElseGet(() -> ResponseEntity.notFound().build());
-        return ResponseEntity.ok(profileId.toString());*/
-        String profileId = developer.get().getProfileId().RecordId();
-        return ResponseEntity.ok(profileId);
+        var profileId = developer.get().getProfileId().RecordId();
+        return ResponseEntity.ok(new ProfileIdResource(profileId));
     }
 
     @Operation(summary = "Get Company Profile Id by email")
     @GetMapping(value = "/company/{email}")
-    public ResponseEntity<String> getCompanyProfileIdByEmail(@PathVariable String email) {
+    public ResponseEntity<ProfileIdResource> getCompanyProfileIdByEmail(@PathVariable String email) {
         var query = new GetCompanyProfileIdByEmailQuery(email);
         var company = profileQueryService.handle(query);
         if (company.isEmpty())ResponseEntity.badRequest().build();
-        var profileId = company.map(value -> ResponseEntity.ok(value.getProfileId().RecordId())).orElseGet(() -> ResponseEntity.notFound().build());
-        return profileId;
-        /*String profileId = company.get().getProfileId().RecordId();
-        return ResponseEntity.ok(profileId);*/
+        var profileId = company.get().getProfileId().RecordId();
+        return ResponseEntity.ok(new ProfileIdResource(profileId));
     }
 
     @Operation(summary = "Get Developer Profile By Id")
