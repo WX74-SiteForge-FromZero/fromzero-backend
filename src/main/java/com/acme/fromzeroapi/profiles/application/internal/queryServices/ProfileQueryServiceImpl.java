@@ -2,7 +2,7 @@ package com.acme.fromzeroapi.profiles.application.internal.queryServices;
 
 import com.acme.fromzeroapi.profiles.domain.model.aggregates.Company;
 import com.acme.fromzeroapi.profiles.domain.model.aggregates.Developer;
-import com.acme.fromzeroapi.profiles.domain.model.valueobjects.ProfileId;
+import com.acme.fromzeroapi.profiles.domain.model.valueObjects.ProfileId;
 import com.acme.fromzeroapi.profiles.domain.services.ProfileQueryService;
 import com.acme.fromzeroapi.profiles.domain.model.queries.*;
 import com.acme.fromzeroapi.profiles.infrastructure.persistence.jpa.repositories.DeveloperRepository;
@@ -16,12 +16,12 @@ import java.util.Optional;
 public class ProfileQueryServiceImpl implements ProfileQueryService {
     private final DeveloperRepository developerRepository;
     private final CompanyRepository enterpriseRepository;
-    private final CompanyRepository companyRepository;
 
-    public ProfileQueryServiceImpl(DeveloperRepository developerRepository, CompanyRepository enterpriseRepository, CompanyRepository companyRepository) {
+
+    public ProfileQueryServiceImpl(DeveloperRepository developerRepository, CompanyRepository enterpriseRepository) {
         this.developerRepository = developerRepository;
         this.enterpriseRepository = enterpriseRepository;
-        this.companyRepository = companyRepository;
+
     }
 
     @Override
@@ -68,7 +68,8 @@ public class ProfileQueryServiceImpl implements ProfileQueryService {
 
     @Override
     public Long handle(GetCompanyIdByEmailQuery query) {
-        var company = companyRepository.findByEmail(query.email());
+        //var company = companyRepository.findByEmail(query.email());
+        var company = enterpriseRepository.findByEmail(query.email());
         if (company.isEmpty())return 0L;
         return company.get().getId();
     }

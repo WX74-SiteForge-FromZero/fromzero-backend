@@ -69,7 +69,9 @@ public class ProfileController {
         var query = new GetDeveloperProfileIdByEmailQuery(email);
         var developer = profileQueryService.handle(query);
         if(developer.isEmpty())ResponseEntity.badRequest().build();
-        var profileId = developer.get().getProfileId();
+        /*var profileId = developer.map(value -> ResponseEntity.ok(value.getProfileId().RecordId())).orElseGet(() -> ResponseEntity.notFound().build());
+        return ResponseEntity.ok(profileId.toString());*/
+        String profileId = developer.get().getProfileId().RecordId();
         return ResponseEntity.ok(profileId);
     }
 
@@ -79,8 +81,10 @@ public class ProfileController {
         var query = new GetCompanyProfileIdByEmailQuery(email);
         var company = profileQueryService.handle(query);
         if (company.isEmpty())ResponseEntity.badRequest().build();
-        var profileId = company.get().getProfileId();
-        return ResponseEntity.ok(profileId);
+        var profileId = company.map(value -> ResponseEntity.ok(value.getProfileId().RecordId())).orElseGet(() -> ResponseEntity.notFound().build());
+        return profileId;
+        /*String profileId = company.get().getProfileId().RecordId();
+        return ResponseEntity.ok(profileId);*/
     }
 
     @Operation(summary = "Get Developer Profile By Id")
