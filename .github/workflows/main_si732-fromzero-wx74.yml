@@ -60,4 +60,7 @@ jobs:
           app-name: 'si732-fromzero-wx74'
           slot-name: 'Production'
           package: '*.jar'
-          
+        env:
+          DB_URL: ${{ secrets.DB_URL }}
+          USERNAME_DB: ${{ secrets.USERNAME_DB }}
+          PASSWORD_DB: ${{ secrets.PASSWORD_DB }}
