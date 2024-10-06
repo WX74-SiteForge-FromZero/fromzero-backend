@@ -15,23 +15,22 @@ import java.util.Optional;
 @Service
 public class ProfileQueryServiceImpl implements ProfileQueryService {
     private final DeveloperRepository developerRepository;
-    private final CompanyRepository enterpriseRepository;
+    private final CompanyRepository companyRepository;
 
 
     public ProfileQueryServiceImpl(DeveloperRepository developerRepository, CompanyRepository enterpriseRepository) {
         this.developerRepository = developerRepository;
-        this.enterpriseRepository = enterpriseRepository;
-
+        this.companyRepository = enterpriseRepository;
     }
 
     @Override
-    public List<Developer> handle(GetAllDevelopersAsyncQuery query) {
+    public List<Developer> handle(GetAllDevelopersQuery query) {
         return developerRepository.findAll();
     }
 
     @Override
     public List<Company> handle(GetAllCompaniesQuery query) {
-        return enterpriseRepository.findAll();
+        return companyRepository.findAll();
     }
 
     @Override
@@ -40,24 +39,14 @@ public class ProfileQueryServiceImpl implements ProfileQueryService {
     }
 
     @Override
-    public Optional<Developer> handle(GetDeveloperProfileIdByEmailQuery query) {
-        return developerRepository.findByEmail(query.email());
-    }
-
-    @Override
-    public Optional<Company> handle(GetCompanyProfileIdByEmailQuery query) {
-        return enterpriseRepository.findByEmail(query.email());
-    }
-
-    @Override
     public Optional<Company> handle(GetCompanyByIdQuery query) {
-        return enterpriseRepository.findById(query.id());
+        return companyRepository.findById(query.id());
     }
 
     @Override
     public Optional<Company> handle(GetCompanyByProfileIdQuery query) {
         var company = new ProfileId(query.profileId());
-        return enterpriseRepository.findByProfileId(company);
+        return companyRepository.findByProfileId(company);
     }
 
     @Override
@@ -67,17 +56,34 @@ public class ProfileQueryServiceImpl implements ProfileQueryService {
     }
 
     @Override
-    public Long handle(GetCompanyIdByEmailQuery query) {
-        //var company = companyRepository.findByEmail(query.email());
-        var company = enterpriseRepository.findByEmail(query.email());
-        if (company.isEmpty())return 0L;
-        return company.get().getId();
+    public Optional<Company> handle(GetCompanyProfileByIdOrRecordIdQuery query) {
+        try {
+            var id = Long.parseLong(query.id());
+            return companyRepository.findById(id);
+        }catch (Exception e) {
+            return companyRepository.findByProfileId(new ProfileId(query.id()));
+        }
     }
 
     @Override
-    public Long handle(GetDeveloperIdByEmailQuery query) {
-        var developer = developerRepository.findByEmail(query.email());
-        if (developer.isEmpty())return 0L;
-        return developer.get().getId();
+    public Optional<Developer> handle(GetDeveloperProfileByIdOrRecordIdQuery query) {
+        try {
+            var id = Long.parseLong(query.id());
+            return developerRepository.findById(id);
+        }catch (Exception e) {
+            return developerRepository.findByProfileId(new ProfileId(query.id()));
+        }
     }
+
+    @Override
+    public Optional<Company> handle(GetCompanyByEmailQuery query) {
+        return companyRepository.findByEmail(query.email());
+    }
+
+    @Override
+    public Optional<Developer> handle(GetDeveloperByEmailQuery query) {
+        return developerRepository.findByEmail(query.email());
+    }
+
+
 }
