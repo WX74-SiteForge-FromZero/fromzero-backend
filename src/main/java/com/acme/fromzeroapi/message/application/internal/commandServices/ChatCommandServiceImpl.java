@@ -24,6 +24,9 @@ public class ChatCommandServiceImpl implements ChatCommandService {
     public Optional<Long> handle(CreateChatCommand command) {
         var company = profileContextFacade.getCompanyByProfileId(command.companyId()).orElseThrow();
         var developer = profileContextFacade.getDeveloperByProfileId(command.developerId()).orElseThrow();
+        if(chatRepository.existsByCompanyAndDeveloper(company,developer)){
+           return Optional.empty();
+        }
         var chat = new Chat(developer, company);
         chatRepository.save(chat);
         return Optional.of(chat.getId());
