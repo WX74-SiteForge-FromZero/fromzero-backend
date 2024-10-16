@@ -15,10 +15,9 @@ public record CreateProjectResource(
         Set<ProgrammingLanguages> languages,
         Set<Frameworks> frameworks,
         ProjectType type,
-        /*String budget,*/
         Double budget,
         ProjectCurrency currency,
-        String methodologies
+        List<MethodologyResource> methodologies
 ) {
 
 }

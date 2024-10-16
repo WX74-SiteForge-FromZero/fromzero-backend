@@ -39,6 +39,11 @@ public class PaymentCommandServiceImpl implements PaymentCommandService {
 
     @Override
     public Optional<Payment> handle(CompletePaymentCommand command) {
+
+        if (command.cardNumber().length()!=16 || command.cvv().length()!=3){
+            return Optional.empty();
+        }
+
         var project = externalProjectPaymentService.fetchProject(command.projectId());
         if (project.isEmpty()){
             return Optional.empty();

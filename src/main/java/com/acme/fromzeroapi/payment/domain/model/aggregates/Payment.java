@@ -25,10 +25,8 @@ public class Payment extends AuditableAbstractAggregateRoot<Payment> {
     )
     private Project project;
 
-    private Double amount;
-
-    @Enumerated(EnumType.STRING)
-    private Currency currency;
+    @Embedded
+    private PaymentAmount amount;
 
     @Setter
     @Enumerated(EnumType.STRING)
@@ -40,9 +38,11 @@ public class Payment extends AuditableAbstractAggregateRoot<Payment> {
     public Payment(Project project) {
         this.developer = project.getDeveloper();
         this.project = project;
-        this.amount = project.getBudget().budget();
+        this.amount=new PaymentAmount(
+                project.getBudget().budget()
+                ,Currency.valueOf(project.getBudget().currency().toString())
+        );
         this.status = PaymentStatus.PENDIENTE;
-        this.currency = Currency.valueOf(project.getBudget().currency().toString());
         this.card = new Card();
     }
     public void updateCard(CompletePaymentCommand command){

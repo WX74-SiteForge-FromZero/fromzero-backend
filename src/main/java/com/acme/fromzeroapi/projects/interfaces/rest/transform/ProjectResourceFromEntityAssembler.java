@@ -17,9 +17,7 @@ public class ProjectResourceFromEntityAssembler {
                 entity.getLanguages(),
                 entity.getFrameworks(),
                 entity.getType(),
-                entity.getBudget().projectBudgetToString(),
-                /*entity.getBudget(),*/
-                entity.getMethodologies()
+                entity.getBudget().projectBudgetToString()
         );
     }
 }

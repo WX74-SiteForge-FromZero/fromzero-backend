@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public record CompletePaymentResource(
         String cardNumber,
-        LocalDate expirationDate,
+        String expirationDate,
         String cvv
 ) {
 }
