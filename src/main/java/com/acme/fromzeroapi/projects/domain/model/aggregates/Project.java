@@ -1,6 +1,5 @@
 package com.acme.fromzeroapi.projects.domain.model.aggregates;
 
-import com.acme.fromzeroapi.payment.domain.model.aggregates.Payment;
 import com.acme.fromzeroapi.profiles.domain.model.aggregates.Developer;
 import com.acme.fromzeroapi.profiles.domain.model.aggregates.Company;
 import com.acme.fromzeroapi.projects.domain.model.commands.CreateProjectCommand;
@@ -70,19 +69,12 @@ public class Project extends AuditableAbstractAggregateRoot<Project> {
     @Column(nullable = false)
     private ProjectType type;
 
-    /*@Column(columnDefinition = "TEXT",nullable = false)
-    private String budget;*/
-
     @Embedded
     @Column(nullable = false)
     private ProjectBudget budget;
 
     @Column(columnDefinition = "TEXT")
     private String methodologies;
-
-    /*@OneToOne(fetch = FetchType.EAGER, mappedBy = "project")*/
-    /*@OneToOne(fetch = FetchType.LAZY,mappedBy = "project")
-    private Payment payment;*/
 
     public Project(CreateProjectCommand command, Company company) {
         this.name = command.name();
@@ -94,7 +86,6 @@ public class Project extends AuditableAbstractAggregateRoot<Project> {
         this.languages = command.languages();
         this.developer = null;
         this.type = command.type();
-        /*this.budget = command.budget();*/
         this.budget=new ProjectBudget(command.budget(),command.currency());
         this.methodologies = command.methodologies();
     }
@@ -117,7 +108,7 @@ public class Project extends AuditableAbstractAggregateRoot<Project> {
     }
 
     public void setProjectPayment(Long projectId) {
-        this.registerEvent(new SetProjectPaymentEvent(this,projectId)); // ,this? o recibo por parametro
+        this.registerEvent(new SetProjectPaymentEvent(this,projectId));
     }
 
 }

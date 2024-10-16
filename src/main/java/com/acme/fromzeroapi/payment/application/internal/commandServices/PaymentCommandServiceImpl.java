@@ -39,7 +39,6 @@ public class PaymentCommandServiceImpl implements PaymentCommandService {
 
     @Override
     public Optional<Payment> handle(CompletePaymentCommand command) {
-        //var payment = paymentRepository.findById(command.paymentId());
         var project = externalProjectPaymentService.fetchProject(command.projectId());
         if (project.isEmpty()){
             return Optional.empty();

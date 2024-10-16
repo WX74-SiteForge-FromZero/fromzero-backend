@@ -13,9 +13,6 @@ public class PaymentResourceFromEntityAssembler {
           entity.getCurrency(),
           entity.getStatus(),
           entity.getCard()
-          /*entity.getCard().cardNumber(),
-          entity.getCard().expirationDate(),
-          entity.getCard().cvv()*/
         );
     }
 }

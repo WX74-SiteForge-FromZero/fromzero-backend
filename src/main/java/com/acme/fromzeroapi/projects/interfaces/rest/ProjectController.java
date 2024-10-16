@@ -6,10 +6,7 @@ import com.acme.fromzeroapi.projects.domain.model.queries.*;
 import com.acme.fromzeroapi.projects.domain.model.valueObjects.ProjectState;
 import com.acme.fromzeroapi.projects.domain.services.ProjectCommandService;
 import com.acme.fromzeroapi.projects.domain.services.ProjectQueryService;
-import com.acme.fromzeroapi.projects.interfaces.rest.resources.AssignProjectDeveloperResource;
-import com.acme.fromzeroapi.projects.interfaces.rest.resources.CreateProjectResource;
-import com.acme.fromzeroapi.projects.interfaces.rest.resources.ProjectResource;
-import com.acme.fromzeroapi.projects.interfaces.rest.resources.UpdateProjectCandidatesListResource;
+import com.acme.fromzeroapi.projects.interfaces.rest.resources.*;
 import com.acme.fromzeroapi.projects.interfaces.rest.transform.AssignedProjectDeveloperResourceFromEntityAssembler;
 import com.acme.fromzeroapi.projects.interfaces.rest.transform.CreateProjectCommandFromResourceAssembler;
 import com.acme.fromzeroapi.projects.interfaces.rest.transform.ProjectResourceFromEntityAssembler;
@@ -85,9 +82,9 @@ public class ProjectController {
     @PatchMapping(value = "/{projectId}/add-candidate")
     public ResponseEntity<UpdateProjectCandidatesListResource> updateProjectCandidatesList(
             @PathVariable Long projectId,
-            @RequestBody Long developerId) {
+            @RequestBody SelectDeveloperResource resource) {
 
-        var command = new UpdateProjectCandidatesListCommand(developerId, projectId);
+        var command = new UpdateProjectCandidatesListCommand(resource.developerId(), projectId);
         var project = this.projectCommandService.handle(command);
         if (project.isEmpty()) {
             return ResponseEntity.badRequest().build();
@@ -100,9 +97,9 @@ public class ProjectController {
     @PatchMapping(value = "/{projectId}/assign-developer")
     public ResponseEntity<AssignProjectDeveloperResource> setProjectDeveloper(
             @PathVariable Long projectId,
-            @RequestBody Long developerId) {
+            @RequestBody SelectDeveloperResource resource) {
 
-        var command = new AssignProjectDeveloperCommand(projectId, developerId);
+        var command = new AssignProjectDeveloperCommand(projectId, resource.developerId());
         var project = projectCommandService.handle(command);
         if (project.isEmpty()) {
             return ResponseEntity.badRequest().build();

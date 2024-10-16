@@ -1,7 +1,6 @@
 package com.acme.fromzeroapi.payment.domain.model.aggregates;
 
 import com.acme.fromzeroapi.payment.domain.model.commands.CompletePaymentCommand;
-import com.acme.fromzeroapi.payment.domain.model.commands.CreatePaymentCommand;
 import com.acme.fromzeroapi.payment.domain.model.events.PaymentCompletedEvent;
 import com.acme.fromzeroapi.payment.domain.model.valueObjects.*;
 import com.acme.fromzeroapi.profiles.domain.model.aggregates.Developer;
@@ -38,26 +37,7 @@ public class Payment extends AuditableAbstractAggregateRoot<Payment> {
     @Embedded
     private Card card;
 
-    // created with acl
-    /*public Payment(
-            Developer developer,
-            Project project,
-            PaymentMethod paymentMethod
-    ){
-        this.developer = developer;
-        this.project = project;
-        this.amount=new Amount();
-        this.status=PaymentStatus.PENDIENTE;
-        this.paymentMethod=paymentMethod;
-        this.card=new Card();
-    }*/
     public Payment(Project project) {
-        /*this.developer = command.developer();
-        this.project = command.project();
-        this.amount = command.project().getBudget().budget();
-        this.status = PaymentStatus.PENDIENTE;
-        this.currency = Currency.valueOf(command.project().getBudget().currency().toString());
-        this.card = new Card();*/
         this.developer = project.getDeveloper();
         this.project = project;
         this.amount = project.getBudget().budget();

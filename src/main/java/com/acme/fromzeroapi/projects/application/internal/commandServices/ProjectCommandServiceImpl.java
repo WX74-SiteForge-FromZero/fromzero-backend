@@ -115,8 +115,6 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
         project.get().setProgress(percentComplete);
 
         if (project.get().getProgress()==100.0){
-            /*project.get().setState(ProjectState.COMPLETADO);
-            externalProfileProjectService.updateDeveloperCompletedProjects(project.get().getDeveloper().getId());*/
             project.get().setProjectPayment(project.get().getId());
         }
 
