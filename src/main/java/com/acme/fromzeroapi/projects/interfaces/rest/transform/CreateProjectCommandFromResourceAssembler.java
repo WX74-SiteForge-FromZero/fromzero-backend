@@ -13,6 +13,7 @@ public class CreateProjectCommandFromResourceAssembler {
                 resource.frameworks(),
                 resource.type(),
                 resource.budget(),
+                resource.currency(),
                 resource.methodologies()
         );
     }
