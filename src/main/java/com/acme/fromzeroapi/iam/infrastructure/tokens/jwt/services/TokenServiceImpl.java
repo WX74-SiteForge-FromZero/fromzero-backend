@@ -53,7 +53,7 @@ public class TokenServiceImpl implements BearerTokenService {
 
     /**
      * This method generates a JWT token from a username and a secret.
-     * It uses the default expiration days from the application.properties file.
+     * It uses the default expiration days from the application.yml file.
      * @param username the username
      * @return String the JWT token
      */
