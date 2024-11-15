@@ -3,6 +3,7 @@ package com.acme.fromzeroapi.projects.interfaces.rest.resources;
 import com.acme.fromzeroapi.projects.domain.model.valueObjects.DeliverableState;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public record DeliverableResource(
         Long id,
@@ -12,6 +13,7 @@ public record DeliverableResource(
         DeliverableState state,
         String developerMessage,
         // Project project,
-        Long projectId
+        Long projectId,
+        List<FileResource> files
 ) {
 }

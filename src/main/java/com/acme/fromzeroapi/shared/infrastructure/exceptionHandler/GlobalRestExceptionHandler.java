@@ -1,5 +1,6 @@
 package com.acme.fromzeroapi.shared.infrastructure.exceptionHandler;
 
+import com.acme.fromzeroapi.projects.domain.exceptions.DeliverableFilesProcessingException;
 import com.acme.fromzeroapi.shared.domain.exceptions.CompanyNotFoundException;
 import com.acme.fromzeroapi.shared.domain.exceptions.DeveloperNotFoundException;
 import com.acme.fromzeroapi.shared.interfaces.rest.resources.MessageResource;
@@ -20,6 +21,14 @@ public class GlobalRestExceptionHandler {
         LOGGER.error(ex.getMessage());
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
+                .body(new MessageResource(ex.getMessage()));
+    }
+
+    @ExceptionHandler(DeliverableFilesProcessingException.class)
+    public ResponseEntity<MessageResource> handle(DeliverableFilesProcessingException ex){
+        LOGGER.error(ex.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
                 .body(new MessageResource(ex.getMessage()));
     }
 }
