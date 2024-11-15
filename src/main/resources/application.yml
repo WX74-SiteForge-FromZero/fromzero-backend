@@ -8,6 +8,20 @@ spring:
     password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+  cloud:
+    azure:
+      storage:
+        account-name: ${AZURE_STORAGE_ACCOUNT_NAME}
+        account-key: ${AZURE_STORAGE_ACCOUNT_KEY}
+        blob:
+          container-name: ${AZURE_CONTAINER_NAME}
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 30MB
+      enabled: true
+
   jpa:
     show-sql: true
     hibernate:
