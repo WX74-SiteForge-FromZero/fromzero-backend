@@ -15,9 +15,13 @@ import com.acme.fromzeroapi.projects.interfaces.rest.transform.DeliverableResour
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,8 +43,7 @@ public class DeliverableController {
 
     @Operation(summary = "Create deliverable")
     @PostMapping
-    public ResponseEntity<DeliverableResource> createDeliverable(@RequestBody CreateDeliverableResource resource) {
-
+    public ResponseEntity<DeliverableResource> createDeliverable(@RequestBody CreateDeliverableResource resource){
         var command = CreateDeliverableCommandFromResourceAssembler.toCommandFromResource(resource);
         var deliverable = deliverableCommandService.handle(command);
         if (deliverable.isEmpty()) {
@@ -76,9 +79,10 @@ public class DeliverableController {
     @PatchMapping(value = "/{deliverableId}/send")
     public ResponseEntity<DeliverableResource> sendDeliverable(
             @PathVariable Long deliverableId,
-            @RequestBody DeveloperMessageResource resource) {
+            @RequestPart(value = "developerMessage") String developerMessage,
+            @RequestPart(value = "files",required = false) List<MultipartFile> files) {
 
-        var updateDeveloperMessageCommand = new UpdateDeveloperMessageCommand(deliverableId, resource.developerMessage());
+        var updateDeveloperMessageCommand = new UpdateDeveloperMessageCommand(deliverableId, developerMessage,files);
         var deliverable = this.deliverableCommandService.handle(updateDeveloperMessageCommand);
         if (deliverable.isEmpty()) return ResponseEntity.badRequest().build();
         var deliverableResource = DeliverableResourceFromEntityAssembler.toResourceFromEntity(deliverable.get());
