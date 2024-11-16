@@ -12,9 +12,9 @@ spring:
     azure:
       storage:
         account-name: ${AZURE_STORAGE_ACCOUNT_NAME}
-        account-key: ${AZURE_STORAGE_ACCOUNT_KEY}
         blob:
           container-name: ${AZURE_CONTAINER_NAME}
+        #account-key: ${AZURE_STORAGE_ACCOUNT_KEY}
 
   servlet:
     multipart:
