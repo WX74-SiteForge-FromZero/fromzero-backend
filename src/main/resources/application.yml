@@ -38,6 +38,6 @@ server:
 
 authorization:
   jwt:
-    secret: WriteHereYourSecretStringForTokenSigningCredentials
+    secret: WriteHereYourSecretStringForTokenSigningCredentialsV2
     expiration:
-      days: 7
+      days: 30
